@@ -1,0 +1,12 @@
+t = load 'transcript.csv' using PigStorage(',');
+c = foreach t generate $0;
+c2 = distinct c;
+c3 = filter c2 by $0 matches 'cse.*';
+gc = group c3 all;
+maxc = foreach gc generate COUNT(c3);
+tmp = join t by $0, c3 by $0;
+grp = group tmp by $1;
+tmp2 = foreach grp generate group, COUNT(tmp);
+tmp3 = join tmp2 by $1, maxc by $0;
+result = foreach tmp3 generate $0;
+dump result;

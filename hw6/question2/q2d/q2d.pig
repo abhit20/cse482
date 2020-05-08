@@ -1,0 +1,10 @@
+p = load 'patient.csv' using PigStorage(',');
+v = load 'visit.csv' using PigStorage(',');
+data = join p by $0, v by $2;
+tmp1 = foreach data generate $3, $7;
+tmp2 = FILTER tmp1 by $0 >= 40;
+grp = group tmp2 by $1;
+tmp3 = foreach grp generate group, COUNT(tmp2);
+lmt = LIMIT tmp3 1;
+result = foreach lmt generate $0;
+dump result;
