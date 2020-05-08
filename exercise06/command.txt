@@ -1,0 +1,1 @@
+hadoop jar /usr/lib/hadoop-streaming-2.8.3-amzn-0.jar -input auto.data -ouput auto -numReduceTasks 1 -mapper mapper.py -file mapper.py -reducer reducer.py -file reducer.py
